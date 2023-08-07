@@ -9,7 +9,8 @@ spec:
   path: ./clusters/kind-cluster/monitoring/prometheus/instance
   prune: true
   dependsOn:
-    - name: kube-system/monitoring-sync
+    - name: monitoring-sync
+      namespace: kube-system
   sourceRef:
     kind: GitRepository
     name: flux-system
