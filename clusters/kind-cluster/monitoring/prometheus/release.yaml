@@ -1,0 +1,25 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: monitoring
+  namespace: monitoring
+spec:
+  install:
+    remediation:
+      retries: -1
+  releaseName: monitoring
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus
+  interval: 1m0s
+  # Default values
+  # https://github.com/grafana/helm-charts/tree/main/charts/loki-stack
+  valuesFrom:
+    - kind: ConfigMap
+      name: monitoring-values
+      valuesKey: values-prometheus.yaml

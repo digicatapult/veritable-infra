@@ -1,0 +1,25 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: loki
+  namespace: monitoring
+spec:
+  install:
+    remediation:
+      retries: -1
+  releaseName: loki
+  chart:
+    spec:
+      chart: loki-stack
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+  interval: 1m0s
+  # Default values
+  # https://github.com/grafana/helm-charts/tree/main/charts/loki-stack
+  valuesFrom:
+    - kind: ConfigMap
+      name: monitoring-values
+      valuesKey: values-loki.yaml
